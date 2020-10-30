@@ -16,11 +16,13 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uet.oop.bomberman.MapInfo.*;
+
 public class BombermanGame extends Application {
-    
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
-    
+
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
+
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
@@ -64,11 +66,42 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
+//        for (int i = 0; i < getCols(); i++) {
+//            for (int j = 0; j < getRows(); j++) {
+//                Entity object;
+//                if (j == 0 || j == getRows() - 1 || i == 0 || i == getCols() - 1) {
+//                    object = new Wall(i, j, Sprite.wall.getFxImage());
+//                }
+//                else {
+//
+//                }
+//                stillObjects.add(object);
+//            }
+//        }
+
+        for(int i=0; i<getMapLines()[0].length(); i++) {
+            for(int j=0; j<getMapLines().length; j++) {
                 Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
+                if(Character.toString(getMapLines()[j].charAt(i)).equals("#")) {
                     object = new Wall(i, j, Sprite.wall.getFxImage());
+                }
+                else if(Character.toString(getMapLines()[j].charAt(i)).equals("*")) {
+                    object = new Wall(i, j, Sprite.brick.getFxImage());
+                }
+                else if(Character.toString(getMapLines()[j].charAt(i)).equals("1")) {
+                    object = new Wall(i, j, Sprite.balloom_left1.getFxImage());
+                }
+                else if(Character.toString(getMapLines()[j].charAt(i)).equals("2")) {
+                    object = new Wall(i, j, Sprite.oneal_right1.getFxImage());
+                }
+                else if(Character.toString(getMapLines()[j].charAt(i)).equals("b")) {
+                    object = new Wall(i, j, Sprite.powerup_bombs.getFxImage());
+                }
+                else if(Character.toString(getMapLines()[j].charAt(i)).equals("f")) {
+                    object = new Wall(i, j, Sprite.powerup_flames.getFxImage());
+                }
+                else if(Character.toString(getMapLines()[j].charAt(i)).equals("s")) {
+                    object = new Wall(i, j, Sprite.powerup_speed.getFxImage());
                 }
                 else {
                     object = new Grass(i, j, Sprite.grass.getFxImage());

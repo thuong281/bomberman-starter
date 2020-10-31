@@ -16,4 +16,16 @@ public class Bomber extends Entity {
     public void update() {
 
     }
+    public void goRight() {
+        x++;
+    }
+    public void goLeft() {
+        x--;
+    }
+    public void goUp() {
+        y--;
+    }
+    public void goDown() {
+        y++;
+    }
 }

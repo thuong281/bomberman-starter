@@ -1,9 +1,23 @@
 package uet.oop.bomberman;
 
-import java.util.Arrays;
+import javafx.scene.image.Image;
+import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.graphics.SpriteAnimation;
 
 public class Testtttttt {
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(MapInfo.getMapLines()));
+        Image[] walkingUp = {Sprite.player_up_1.getFxImage(), Sprite.player_up_2.getFxImage(), Sprite.player_up.getFxImage()};
+        Image[] walkingLeft = {Sprite.player_up_1.getFxImage(), Sprite.player_up_2.getFxImage(), Sprite.player_up.getFxImage()};
+        SpriteAnimation walkUp = new SpriteAnimation(walkingUp, 5);
+        SpriteAnimation walkLeft = new SpriteAnimation(walkingLeft, 5);
+
+        SpriteAnimation animation1 = walkUp;
+
+        System.out.println(animation1.getTotalFrames());
+
+        //animation1 = walkLeft;
+        System.out.println(walkLeft.getTotalFrames());
+        //System.out.println(animation1.getTotalFrames());
+
     }
 }

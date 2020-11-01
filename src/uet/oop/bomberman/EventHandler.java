@@ -38,7 +38,7 @@ public class EventHandler {
             if (e.getCode() == KeyCode.D) {
                 Sandbox.getBomber().setVelX(0);
                 animation.reset();
-                animation = standLeft;
+                animation = standRight;
             }
             if (e.getCode() == KeyCode.A) {
                 Sandbox.getBomber().setVelX(0);
@@ -48,12 +48,12 @@ public class EventHandler {
             if (e.getCode() == KeyCode.W) {
                 Sandbox.getBomber().setVelY(0);
                 animation.reset();
-                animation = standLeft;
+                animation = standUp;
             }
             if (e.getCode() == KeyCode.S) {
                 Sandbox.getBomber().setVelY(0);
                 animation.reset();
-                animation = standLeft;
+                animation = standDown;
             }
         });
 

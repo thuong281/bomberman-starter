@@ -10,15 +10,15 @@ public class SpriteAnimation {
     private int frameCount;                 // Counts ticks for change
     private int frameDelay;                 // frame delay 1-12 (You will have to play around with this)
     private static int currentFrame;        // animations current frame
-    private final int animationDirection;         // animation direction (i.e counting forward or backward)
-    private final int totalFrames;                // total amount of frames for your animation
+    private int animationDirection;         // animation direction (i.e counting forward or backward)
+    private int totalFrames;                // total amount of frames for your animation
     public int getTotalFrames() {
-        return totalFrames;
+        return frames.size();
     }
 
     private boolean stopped;                // has animations stopped
 
-    private static List<Frame> frames = new ArrayList<Frame>();    // Arraylist of frames
+    private List<Frame> frames = new ArrayList<Frame>();    // Arraylist of frames
 
     public SpriteAnimation(Image[] frames, int frameDelay) {
         this.frameDelay = frameDelay;
@@ -32,7 +32,7 @@ public class SpriteAnimation {
         this.frameDelay = frameDelay;
         this.currentFrame = 0;
         this.animationDirection = 1;
-        this.totalFrames = SpriteAnimation.frames.size();
+        this.totalFrames = getTotalFrames();
 
     }
 

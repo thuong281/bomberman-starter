@@ -6,14 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
-import uet.oop.bomberman.graphics.Sprite;
 
-public class Brick extends Entity {
-    RectBoundedBox entityBoundary;
+public class OneAi extends Entity {
 
-    public Brick(int x, int y, Image img) {
+    public OneAi(int x, int y, Image img) {
         super( x, y, img);
-        entityBoundary = new RectBoundedBox(x, y, Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE);
     }
 
     @Override
@@ -23,14 +20,12 @@ public class Brick extends Entity {
 
     @Override
     public boolean isColliding(Entity b) {
-        RectBoundedBox otherEntityBoundary = (RectBoundedBox) b.getBoundingBox();
-        return entityBoundary.checkCollision(otherEntityBoundary);
+        return false;
     }
 
     @Override
     public RectBoundedBox getBoundingBox() {
-        entityBoundary.setPosition(x, y);
-        return entityBoundary;
+        return null;
     }
 
     @Override

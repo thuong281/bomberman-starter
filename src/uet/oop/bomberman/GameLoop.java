@@ -27,13 +27,12 @@ public class GameLoop {
         }.start();
     }
     public static void updateGame() {
-
+        EventHandler.playerMovement();
         entities.forEach(Entity::update);
     }
 
     public static void renderGame() {
         getBomber().tick();
-        EventHandler.playerMovement();
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }

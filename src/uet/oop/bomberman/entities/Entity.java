@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -41,8 +42,13 @@ public abstract class Entity {
     public void render(GraphicsContext gc) {
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
-        gc.drawImage(img, x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE);
+        gc.drawImage(img, x, y);
     }
+
     public abstract void update();
+    public abstract boolean isColliding(Entity b);
+    public abstract RectBoundedBox getBoundingBox();
+    public abstract boolean isPlayerCollisionFriendly();
+
 
 }

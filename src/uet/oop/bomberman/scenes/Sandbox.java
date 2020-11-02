@@ -6,6 +6,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.GameLoop;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.powerup.Bombs;
+import uet.oop.bomberman.entities.powerup.Flame;
+import uet.oop.bomberman.entities.powerup.Speed;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -32,6 +35,10 @@ public class Sandbox {
 
     public static List<Entity> stillObjects = new ArrayList<>();
 
+    public static List<Entity> getStillObjects() {
+        return stillObjects;
+    }
+
     public static void addEntityToGame(Entity e) {
         entities.add(e);
     }
@@ -49,36 +56,36 @@ public class Sandbox {
                 Entity object;
                 Entity backObject;
                 if (Character.toString(getMapLines()[j].charAt(i)).equals("#")) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                    object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.wall.getFxImage());
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("*")) {
-                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                    object = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage());
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("1")) {
-                    backObject = new Grass(i, j, Sprite.grass.getFxImage());
+                    backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                     stillObjects.add(backObject);
-                    object = new Wall(i, j, Sprite.balloom_left1.getFxImage());
+                    object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage());
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("2")) {
-                    backObject = new Grass(i, j, Sprite.grass.getFxImage());
+                    backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                     stillObjects.add(backObject);
-                    object = new Wall(i, j, Sprite.oneal_right1.getFxImage());
+                    object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.oneal_right1.getFxImage());
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("b")) {
-                    object = new Wall(i, j, Sprite.powerup_bombs.getFxImage());
+                    object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.powerup_bombs.getFxImage());
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("f")) {
-                    backObject = new Grass(i, j, Sprite.grass.getFxImage());
+                    backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                     stillObjects.add(backObject);
-                    object = new Wall(i, j, Sprite.powerup_flames.getFxImage());
+                    object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.powerup_flames.getFxImage());
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("s")) {
-                    backObject = new Grass(i, j, Sprite.grass.getFxImage());
+                    backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                     stillObjects.add(backObject);
-                    object = new Wall(i, j, Sprite.powerup_speed.getFxImage());
+                    object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.powerup_speed.getFxImage());
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("p")) {
-                    backObject = new Grass(i, j, Sprite.grass.getFxImage());
+                    backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                     object = new Bomber(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.player_right.getFxImage());
                     SandboxBomber = (Bomber) object;
                     stillObjects.add(backObject);
                     entities.add(getBomber());
                     continue;
                 } else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                    object = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                 }
                 stillObjects.add(object);
             }

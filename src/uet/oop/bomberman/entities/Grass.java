@@ -9,7 +9,7 @@ public class Grass extends Entity {
 
     public Grass(int x, int y, Image img) {
         super(x, y, img);
-        entityBoundary = new RectBoundedBox(x, y, Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE);
+        entityBoundary = new RectBoundedBox(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
     }
 
     @Override

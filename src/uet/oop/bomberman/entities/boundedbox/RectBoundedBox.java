@@ -2,8 +2,8 @@ package uet.oop.bomberman.entities.boundedbox;
 
 import javafx.geometry.Rectangle2D;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.scenes.Sandbox;
 
-import static uet.oop.bomberman.graphics.Sprite.DEFAULT_SIZE;
 
 public class RectBoundedBox {
     int x;
@@ -33,8 +33,8 @@ public class RectBoundedBox {
     }
 
     public void setPosition(int x, int y) {
-        this.x = x + Sprite.SCALED_SIZE;
-        this.y = y * Sprite.SCALED_SIZE;
+        this.x = x;
+        this.y = y;
         boundary = new Rectangle2D(this.x, this.y, width, height);
     }
 }

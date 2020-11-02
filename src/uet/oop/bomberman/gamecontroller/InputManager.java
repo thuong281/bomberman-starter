@@ -16,18 +16,18 @@ public class InputManager {
         Bomber bomber = Sandbox.getBomber();
 
         if (keyboardInputs.contains(KeyCode.UP) || keyboardInputs.contains(KeyCode.W)) {
-            bomber.move(2, Direction.UP);
+            bomber.move(Direction.UP);
         }
         if (keyboardInputs.contains(KeyCode.DOWN) || keyboardInputs.contains(KeyCode.S)) {
-            bomber.move(2, Direction.DOWN);
+            bomber.move(Direction.DOWN);
         }
         if (keyboardInputs.contains(KeyCode.LEFT) || keyboardInputs.contains(KeyCode.A)) {
-            bomber.move(2, Direction.LEFT);
+            bomber.move(Direction.LEFT);
         }
         if (keyboardInputs.contains(KeyCode.RIGHT) || keyboardInputs.contains(KeyCode.D)) {
-            bomber.move(2, Direction.RIGHT);
+            bomber.move(Direction.RIGHT);
         }
-        if( !keyboardInputs.contains(KeyCode.LEFT) &&
+        if (!keyboardInputs.contains(KeyCode.LEFT) &&
                 !keyboardInputs.contains(KeyCode.RIGHT) &&
                 !keyboardInputs.contains(KeyCode.UP) &&
                 !keyboardInputs.contains(KeyCode.DOWN) &&
@@ -35,8 +35,7 @@ public class InputManager {
                 !keyboardInputs.contains(KeyCode.A) &&
                 !keyboardInputs.contains(KeyCode.S) &&
                 !keyboardInputs.contains(KeyCode.D)
-        )
-        {
+        ) {
             if (Sandbox.getBomber().getAnimation() == BomberSprite.walkDown) bomber.move(0, Direction.DOWN);
             if (Sandbox.getBomber().getAnimation() == BomberSprite.walkUp) bomber.move(0, Direction.UP);
             if (Sandbox.getBomber().getAnimation() == BomberSprite.walkLeft) bomber.move(0, Direction.LEFT);

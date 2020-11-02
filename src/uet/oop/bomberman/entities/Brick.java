@@ -12,8 +12,8 @@ public class Brick extends Entity {
     RectBoundedBox entityBoundary;
 
     public Brick(int x, int y, Image img) {
-        super( x, y, img);
-        entityBoundary = new RectBoundedBox(x, y, Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE);
+        super(x, y, img);
+        entityBoundary = new RectBoundedBox(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Brick extends Entity {
 
     @Override
     public boolean isColliding(Entity b) {
-        RectBoundedBox otherEntityBoundary = (RectBoundedBox) b.getBoundingBox();
+        RectBoundedBox otherEntityBoundary = b.getBoundingBox();
         return entityBoundary.checkCollision(otherEntityBoundary);
     }
 

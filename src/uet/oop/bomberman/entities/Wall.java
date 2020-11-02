@@ -9,7 +9,7 @@ public class Wall extends Entity {
 
     public Wall(int x, int y, Image img) {
         super(x, y, img);
-        entityBoundary = new RectBoundedBox(x, y, Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE);
+        entityBoundary = new RectBoundedBox(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
     }
 
     @Override
@@ -19,7 +19,7 @@ public class Wall extends Entity {
 
     @Override
     public boolean isColliding(Entity b) {
-        RectBoundedBox otherEntityBoundary = (RectBoundedBox) b.getBoundingBox();
+        RectBoundedBox otherEntityBoundary = b.getBoundingBox();
         return entityBoundary.checkCollision(otherEntityBoundary);
     }
 

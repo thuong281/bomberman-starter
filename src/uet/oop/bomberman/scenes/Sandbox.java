@@ -9,6 +9,7 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.powerup.Bombs;
 import uet.oop.bomberman.entities.powerup.Flame;
 import uet.oop.bomberman.entities.powerup.Speed;
+import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -92,6 +93,7 @@ public class Sandbox {
         }
 
         GameLoop.start(gc);
+        EventHandler.attachEventHandlers(s);
 
     }
 

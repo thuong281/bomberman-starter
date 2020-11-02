@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import uet.oop.bomberman.MapInfo;
+import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 import uet.oop.bomberman.graphics.BomberSprite;
 
@@ -24,36 +25,12 @@ import static uet.oop.bomberman.MapInfo.getMapLines;
 
 public class Bomber extends Entity {
 
-    private int velX = 0;
-    private int velY = 0;
-    private static int step = 2;
+    Direction currentDirection;
+    private int step;
     RectBoundedBox playerBoundary;
-
-
-    public static int getStep() {
-        return step;
-    }
-
-    public void setVelX(int velX) {
-        this.velX = velX;
-    }
-
-    public void setVelY(int velY) {
-        this.velY = velY;
-    }
-
-    public int getVelX() {
-        return velX;
-    }
-
-    public int getVelY() {
-        return velY;
-    }
 
     public void tick() {
         BomberSprite.animation.update();
-        x += velX;
-        y += velY;
     }
 
     public Bomber(int x, int y, Image img) {
@@ -90,14 +67,73 @@ public class Bomber extends Entity {
 
     public boolean checkCollisions(int newX, int newY) {
         playerBoundary.setPosition(newX, newY);
-        if (x>=100) {
-                return true;
-            }
+        if (x >= 100) {
+            return true;
+        }
 
         playerBoundary.setPosition(x, y);
         return false;
     }
 
+    public void move(int steps, Direction direction) {
 
+        //if(steps!=0){System.out.println("Steps before="+steps+" now="+steps * GameLoop.getDeltaTime());}
+        //steps *= GameLoop.getDeltaTime();
+
+        if (steps == 0) {
+            animation.reset();
+            switch (direction) {
+                case UP:
+                    animation = walkUp;
+                    break;
+                case DOWN:
+                    animation = standDown;
+                    break;
+                case LEFT:
+                    animation = standLeft;
+                    break;
+                case RIGHT:
+                    animation = standRight;
+                    break;
+            }
+
+        } else {
+            switch (direction) {
+                case UP:
+                    y -= steps;
+                    animation = walkUp;
+                    currentDirection = Direction.UP;
+                    animation.start();
+
+                    break;
+                case DOWN:
+                    y += steps;
+                    animation = walkDown;
+                    currentDirection = Direction.DOWN;
+                    animation.start();
+                    break;
+                case LEFT:
+                    x -= steps;
+                    animation = walkLeft;
+                    currentDirection = Direction.LEFT;
+                    animation.start();
+                    break;
+                case RIGHT:
+
+                    x += steps;
+                    animation = walkRight;
+                    currentDirection = Direction.RIGHT;
+                    animation.start();
+                    break;
+                default:
+                    animation = standRight;
+                    animation.reset();
+            }
+        }
+    }
+
+    public SpriteAnimation getAnimation() {
+        return animation;
+    }
 
 }

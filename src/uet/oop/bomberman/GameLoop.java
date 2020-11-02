@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.gamecontroller.InputManager;
 import uet.oop.bomberman.graphics.Sprite;
 
 
@@ -27,7 +28,7 @@ public class GameLoop {
         }.start();
     }
     public static void updateGame() {
-        EventHandler.playerMovement();
+        InputManager.handlePlayerMovements();
         entities.forEach(Entity::update);
     }
 

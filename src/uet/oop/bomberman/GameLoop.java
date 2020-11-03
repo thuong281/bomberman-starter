@@ -33,7 +33,6 @@ public class GameLoop {
     }
 
     public static void renderGame() {
-        getBomber().tick();
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }

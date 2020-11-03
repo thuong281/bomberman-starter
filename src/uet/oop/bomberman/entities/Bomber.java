@@ -1,31 +1,22 @@
 package uet.oop.bomberman.entities;
 
 
-import javafx.animation.Animation;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import uet.oop.bomberman.MapInfo;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
-import uet.oop.bomberman.graphics.BomberSprite;
+import uet.oop.bomberman.graphics.Animation.BomberManAnimation;
 
-import static uet.oop.bomberman.graphics.BomberSprite.*;
+import static uet.oop.bomberman.graphics.Animation.BomberManAnimation.*;
 
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.SpriteAnimation;
 import uet.oop.bomberman.scenes.Sandbox;
 
-import java.awt.image.BufferedImage;
-import java.util.Map;
-
-import static uet.oop.bomberman.MapInfo.getMapLines;
-
 public class Bomber extends Entity {
 
     Direction currentDirection;
+    public int bombCount = 100;
 
     public int getStep() {
         return step;
@@ -35,7 +26,7 @@ public class Bomber extends Entity {
     RectBoundedBox playerBoundary;
 
     public void tick() {
-        BomberSprite.animation.update();
+
     }
 
     public Bomber(int x, int y, Image img) {
@@ -62,7 +53,7 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
-
+        BomberManAnimation.animation.update();
     }
 
     @Override
@@ -150,6 +141,18 @@ public class Bomber extends Entity {
 
     public SpriteAnimation getAnimation() {
         return animation;
+    }
+
+    public boolean hasMoreBombs() {
+        return bombCount > 0;
+    }
+
+    public void incrementBombCount() {
+        ++bombCount;
+    }
+
+    public void decrementBombCount() {
+        --bombCount;
     }
 }
 

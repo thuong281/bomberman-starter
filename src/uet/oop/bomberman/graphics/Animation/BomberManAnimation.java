@@ -1,8 +1,11 @@
-package uet.oop.bomberman.graphics;
+package uet.oop.bomberman.graphics.Animation;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.graphics.SpriteAnimation;
 
-public class BomberSprite {
+public class BomberManAnimation {
+
     //right
     public static Image[] walkingRight = {Sprite.player_right_1.getFxImage(), Sprite.player_right_2.getFxImage()};
     public static SpriteAnimation walkRight = new SpriteAnimation(walkingRight, 5);
@@ -33,4 +36,5 @@ public class BomberSprite {
 
     //initial sprite
     public static SpriteAnimation animation = standRight;
+
 }

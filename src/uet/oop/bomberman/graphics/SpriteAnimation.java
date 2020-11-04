@@ -9,7 +9,7 @@ public class SpriteAnimation {
 
     private int frameCount;                 // Counts ticks for change
     private int frameDelay;                 // frame delay 1-12 (You will have to play around with this)
-    private static int currentFrame;        // animations current frame
+    private  int currentFrame;        // animations current frame
     private int animationDirection;         // animation direction (i.e counting forward or backward)
     private int totalFrames;                // total amount of frames for your animation
     public int getTotalFrames() {

@@ -1,23 +1,14 @@
 package uet.oop.bomberman;
 
-import javafx.scene.image.Image;
-import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.graphics.SpriteAnimation;
+
+import javafx.geometry.Rectangle2D;
 
 public class Testtttttt {
     public static void main(String[] args) {
-        Image[] walkingUp = {Sprite.player_up_1.getFxImage(), Sprite.player_up_2.getFxImage(), Sprite.player_up.getFxImage()};
-        Image[] walkingLeft = {Sprite.player_up_1.getFxImage(), Sprite.player_up_2.getFxImage(), Sprite.player_up.getFxImage()};
-        SpriteAnimation walkUp = new SpriteAnimation(walkingUp, 5);
-        SpriteAnimation walkLeft = new SpriteAnimation(walkingLeft, 5);
-
-        SpriteAnimation animation1 = walkUp;
-
-        System.out.println(animation1.getTotalFrames());
-
-        //animation1 = walkLeft;
-        System.out.println(walkLeft.getTotalFrames());
-        //System.out.println(animation1.getTotalFrames());
-
+        Rectangle2D r1 =new Rectangle2D(92,160,22,22);
+        Rectangle2D r2 =new Rectangle2D(64,128,32,32);
+        System.out.println(r1.intersects(r2));
     }
+
 }
+

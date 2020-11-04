@@ -1,10 +1,7 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 import uet.oop.bomberman.graphics.Sprite;
@@ -41,6 +38,13 @@ public class Balloom extends Entity {
                 return true;
             }
         }
+        for (Entity e : Sandbox.getBomb()) {
+            if (isColliding(e)) {
+                entityBoundary.setPosition(x, y);
+                return true;
+            }
+        }
+
         entityBoundary.setPosition(x, y);
         return false;
     }
@@ -50,6 +54,12 @@ public class Balloom extends Entity {
         entityBoundary.setPosition(tmpX, y);
         for (Entity e : Sandbox.getStillObjects()) {
             if (isColliding(e) && !e.isPlayerCollisionFriendly()) {
+                entityBoundary.setPosition(x, y);
+                return true;
+            }
+        }
+        for (Entity e : Sandbox.getBomb()) {
+            if (isColliding(e)) {
                 entityBoundary.setPosition(x, y);
                 return true;
             }
@@ -68,10 +78,12 @@ public class Balloom extends Entity {
             case LEFT:
                 x -= step;
                 animation = moveLeft;
+                animation.start();
                 break;
             case RIGHT:
                 x += step;
                 animation = moveRight;
+                animation.start();
                 break;
         }
     }

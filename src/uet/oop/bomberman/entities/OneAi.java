@@ -1,10 +1,7 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 import uet.oop.bomberman.graphics.Sprite;
@@ -23,7 +20,7 @@ public class OneAi extends Entity {
     public final Image[] movingDown = {Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1.getFxImage()};
     public final SpriteAnimation moveDown = new SpriteAnimation(movingDown, 10);
 
-    SpriteAnimation animation = moveUp;
+    SpriteAnimation animation = moveDown;
 
 
     public OneAi(int x, int y, Image img) {
@@ -41,6 +38,12 @@ public class OneAi extends Entity {
                 return true;
             }
         }
+        for (Entity e : Sandbox.getBomb()) {
+            if (isColliding(e)) {
+                entityBoundary.setPosition(x, y);
+                return true;
+            }
+        }
         entityBoundary.setPosition(x, y);
         return false;
     }
@@ -50,6 +53,12 @@ public class OneAi extends Entity {
         entityBoundary.setPosition(x, tmpY);
         for (Entity e : Sandbox.getStillObjects()) {
             if (isColliding(e) && !e.isPlayerCollisionFriendly()) {
+                entityBoundary.setPosition(x, y);
+                return true;
+            }
+        }
+        for (Entity e : Sandbox.getBomb()) {
+            if (isColliding(e)) {
                 entityBoundary.setPosition(x, y);
                 return true;
             }
@@ -67,10 +76,12 @@ public class OneAi extends Entity {
             case UP:
                 y -= step;
                 animation = moveUp;
+                animation.start();
                 break;
             case DOWN:
                 y += step;
                 animation = moveDown;
+                animation.start();
                 break;
         }
     }

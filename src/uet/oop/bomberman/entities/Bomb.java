@@ -13,12 +13,14 @@ import java.util.Date;
 
 public class Bomb extends Entity {
 
-    boolean friendly =true;
+    boolean friendly = true;
 
     int timerDurationInMillis = 3500;
     RectBoundedBox entityBoundary;
+
     public final Image[] puttingBomb = {Sprite.bomb.getFxImage(), Sprite.bomb_1.getFxImage(), Sprite.bomb_2.getFxImage()};
-    public final SpriteAnimation putBomb = new SpriteAnimation(puttingBomb, 5);
+    public final SpriteAnimation putBomb = new SpriteAnimation(puttingBomb, 7);
+
 
     public SpriteAnimation getPutBomb() {
         return putBomb;
@@ -33,7 +35,8 @@ public class Bomb extends Entity {
 
     Date addedDate;
     STATE bombState;
-    public void setFriendly (boolean b) {
+
+    public void setFriendly(boolean b) {
         friendly = b;
     }
 
@@ -46,19 +49,16 @@ public class Bomb extends Entity {
 
     public boolean isAlive() {
         STATE s = checkBombState();
-        if (s == STATE.DEAD) {
+        if (s == STATE.EXPLODING) {
             return false;
         } else {
-            if (s == STATE.ACTIVE || s == STATE.INACTIVE) {
-                return true;
-            }
             return true;
         }
     }
 
     public STATE checkBombState() {
         if (new Date().getTime() > timerDurationInMillis + addedDate.getTime()) {
-            return STATE.DEAD;
+            return STATE.EXPLODING;
         } else {
             return STATE.ACTIVE;
         }
@@ -95,5 +95,12 @@ public class Bomb extends Entity {
     @Override
     public void render(GraphicsContext gc) {
         gc.drawImage(putBomb.getSprite(), x, y);
+    }
+
+    public boolean isOnOtherBomb() {
+        for (Entity e : Sandbox.getBomb()) {
+            if (e != this && isColliding(e)) return true;
+        }
+        return false;
     }
 }

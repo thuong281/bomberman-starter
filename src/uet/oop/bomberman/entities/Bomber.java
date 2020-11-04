@@ -16,7 +16,7 @@ import uet.oop.bomberman.scenes.Sandbox;
 public class Bomber extends Entity {
 
     Direction currentDirection;
-    public int bombCount = 3;
+    public int bombCount = 10;
 
     public int getStep() {
         return step;
@@ -51,9 +51,6 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         BomberManAnimation.animation.update();
-//        if (!checkCollisions(x+step, y)) {
-//            x += getStep();
-//        }
     }
 
     @Override

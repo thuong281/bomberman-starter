@@ -16,7 +16,7 @@ import uet.oop.bomberman.scenes.Sandbox;
 public class Bomber extends Entity {
 
     Direction currentDirection;
-    public int bombCount = 100;
+    public int bombCount = 3;
 
     public int getStep() {
         return step;
@@ -25,9 +25,6 @@ public class Bomber extends Entity {
     private int step = 2;
     RectBoundedBox playerBoundary;
 
-    public void tick() {
-
-    }
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -54,6 +51,9 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         BomberManAnimation.animation.update();
+//        if (!checkCollisions(x+step, y)) {
+//            x += getStep();
+//        }
     }
 
     @Override
@@ -70,6 +70,12 @@ public class Bomber extends Entity {
                 System.out.println("Player x=" + getX() + " y="
                         + getY() + " colliding with x=" + e.getX()
                         + " y=" + e.getY());
+                return true;
+            }
+        }
+        for (Entity e : Sandbox.getBomb()) {
+            if (isColliding(e) && !e.isPlayerCollisionFriendly()) {
+                playerBoundary.setPosition(x, y);
                 return true;
             }
         }

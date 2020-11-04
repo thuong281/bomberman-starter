@@ -7,45 +7,72 @@ import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.SpriteAnimation;
+import uet.oop.bomberman.scenes.Sandbox;
 
 import java.util.Date;
 
+public class Bomb extends Entity {
 
+    boolean friendly =true;
 
-public class Bomb extends Entity{
-
-    int timerDurationInMillis = 2000;
+    int timerDurationInMillis = 3500;
     RectBoundedBox entityBoundary;
-    public  final Image[] puttingBomb = {Sprite.bomb.getFxImage(), Sprite.bomb_1.getFxImage(), Sprite.bomb_2.getFxImage()};
-    public  final SpriteAnimation putBomb = new SpriteAnimation(puttingBomb,5);
-    public SpriteAnimation getPutBomb(){
+    public final Image[] puttingBomb = {Sprite.bomb.getFxImage(), Sprite.bomb_1.getFxImage(), Sprite.bomb_2.getFxImage()};
+    public final SpriteAnimation putBomb = new SpriteAnimation(puttingBomb, 5);
+
+    public SpriteAnimation getPutBomb() {
         return putBomb;
     }
 
-    enum STATE
-    {
+    enum STATE {
         INACTIVE,   //INACTIVE when bomb's timer hasnt yet started
         ACTIVE,     //Active when bomb's timer has started and it will explode soon
         EXPLODING,  //when bomb is exploding
         DEAD;   //when the bomb has already exploded
     }
+
     Date addedDate;
     STATE bombState;
-
-    public void tick() {
-        putBomb.update();
+    public void setFriendly (boolean b) {
+        friendly = b;
     }
 
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
         entityBoundary = new RectBoundedBox(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
         addedDate = new Date();
-        bombState=STATE.ACTIVE;
+        bombState = STATE.ACTIVE;
+    }
+
+    public boolean isAlive() {
+        STATE s = checkBombState();
+        if (s == STATE.DEAD) {
+            return false;
+        } else {
+            if (s == STATE.ACTIVE || s == STATE.INACTIVE) {
+                return true;
+            }
+            return true;
+        }
+    }
+
+    public STATE checkBombState() {
+        if (new Date().getTime() > timerDurationInMillis + addedDate.getTime()) {
+            return STATE.DEAD;
+        } else {
+            return STATE.ACTIVE;
+        }
+    }
+
+    public void changeFriendlyState() {
+        if (!isColliding(Sandbox.getBomber()))
+            setFriendly(false);
     }
 
     @Override
     public void update() {
         putBomb.update();
+
     }
 
     @Override
@@ -62,7 +89,7 @@ public class Bomb extends Entity{
 
     @Override
     public boolean isPlayerCollisionFriendly() {
-        return false;
+        return friendly;
     }
 
     @Override

@@ -48,11 +48,12 @@ public class InputManager {
             if (bomber.hasMoreBombs()) {
                 Bomb newBomb = new Bomb(((bomber.getX() + 8) / 32) * Sprite.SCALED_SIZE,
                         ((bomber.getY() + 8) / 32) * Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
-                Sandbox.addEntityToGame(newBomb);
+                Sandbox.addBombToGame(newBomb);
                 newBomb.getPutBomb().start();
+                //System.out.println(Sandbox.count());
                 bomber.decrementBombCount();
             } else {
-                System.out.println("het bom");
+                System.out.println("out of bomb");
             }
             keyboardInputs.remove(KeyCode.SPACE);
         }

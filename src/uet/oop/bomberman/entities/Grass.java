@@ -19,8 +19,7 @@ public class Grass extends Entity {
 
     @Override
     public boolean isColliding(Entity b) {
-        RectBoundedBox otherEntityBoundary = (RectBoundedBox) b.getBoundingBox();
-        return entityBoundary.checkCollision(otherEntityBoundary);
+        return false;
     }
 
     @Override

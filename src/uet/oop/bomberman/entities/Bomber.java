@@ -5,6 +5,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
+import uet.oop.bomberman.entities.powerup.AddBomb;
+import uet.oop.bomberman.entities.powerup.Flame;
+import uet.oop.bomberman.entities.powerup.Speed;
 import uet.oop.bomberman.graphics.Animation.BomberManAnimation;
 
 import static uet.oop.bomberman.graphics.Animation.BomberManAnimation.*;
@@ -13,22 +16,31 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.SpriteAnimation;
 import uet.oop.bomberman.scenes.Sandbox;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Bomber extends Entity {
 
     Direction currentDirection;
     public int bombCount = 10;
 
+    int explodeLength = 1;
+
     public int getStep() {
         return step;
     }
 
-    private int step = 2;
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    private int step = 1;
     RectBoundedBox playerBoundary;
 
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
-        playerBoundary = new RectBoundedBox(x, y, Sprite.SCALED_SIZE - 8, Sprite.SCALED_SIZE);
+        playerBoundary = new RectBoundedBox(x, y, (int) (Sprite.DEFAULT_SIZE * 1.5), (int) (Sprite.DEFAULT_SIZE * 1.5));
     }
 
     @Override
@@ -105,6 +117,7 @@ public class Bomber extends Entity {
         switch (direction) {
             case UP:
                 if (!checkCollisions(x, y - step)) {
+                    getPowerUp();
                     y -= getStep();
                     animation = walkUp;
                     currentDirection = Direction.UP;
@@ -113,6 +126,7 @@ public class Bomber extends Entity {
                 break;
             case DOWN:
                 if (!checkCollisions(x, y + step)) {
+                    getPowerUp();
                     y += getStep();
                     animation = walkDown;
                     currentDirection = Direction.DOWN;
@@ -121,6 +135,7 @@ public class Bomber extends Entity {
                 break;
             case LEFT:
                 if (!checkCollisions(x - step, y)) {
+                    getPowerUp();
                     x -= getStep();
                     animation = walkLeft;
                     currentDirection = Direction.LEFT;
@@ -129,6 +144,7 @@ public class Bomber extends Entity {
                 break;
             case RIGHT:
                 if (!checkCollisions(x + step, y)) {
+                    getPowerUp();
                     x += getStep();
                     animation = walkRight;
                     currentDirection = Direction.RIGHT;
@@ -139,6 +155,30 @@ public class Bomber extends Entity {
                 animation = standRight;
                 animation.reset();
 
+        }
+    }
+
+    public void getPowerUp() {
+        if (Sandbox.powerUps.size() > 0) {
+            List<Entity> tmp = new ArrayList<>(Sandbox.powerUps);
+
+            for (int i = 0; i < tmp.size(); i++) {
+                if (isColliding(tmp.get(i)) && tmp.get(i) instanceof Speed) {
+                    Sandbox.powerUps.remove(Sandbox.powerUps.get(i));
+                    setStep(getStep() + 1);
+                    System.out.println("speed up");
+                }
+                if (isColliding(tmp.get(i)) && tmp.get(i) instanceof Flame) {
+                    Sandbox.powerUps.remove(Sandbox.powerUps.get(i));
+                    Sandbox.getBomber().explodeLength++;
+                    System.out.println("longer explosion");
+                }
+                if (isColliding(tmp.get(i)) && tmp.get(i) instanceof AddBomb) {
+                    Sandbox.powerUps.remove(Sandbox.powerUps.get(i));
+                    bombCount++;
+                    System.out.println("add bomb");
+                }
+            }
         }
     }
 

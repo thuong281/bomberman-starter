@@ -16,7 +16,7 @@ import java.util.List;
 public class ExplodeBomb extends Entity {
 
     boolean friendly = true;
-    int explodeLength = 1;
+
     List<ExplodeBomb> spanExplosionHorizontal = new ArrayList<>();
     List<ExplodeBomb> spanExplosionVertical = new ArrayList<>();
 

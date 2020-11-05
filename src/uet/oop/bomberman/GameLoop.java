@@ -62,6 +62,7 @@ public class GameLoop {
         enemies.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
         explodeBomb.forEach(g -> g.render(gc));
+        powerUps.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }
 }

@@ -7,7 +7,9 @@ import uet.oop.bomberman.scenes.Sandbox;
 
 public class Testtttttt {
     public static void main(String[] args) {
-        System.out.println(Sandbox.getStillObjects().get(0) instanceof Wall);
+        int a = 10;
+        double b =1.5;
+        System.out.println(a*(int)b);
     }
 
 }

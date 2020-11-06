@@ -35,7 +35,7 @@ public class Sandbox {
     public static List<Entity> enemies = new ArrayList<>();
     public static List<Entity> bomb = new ArrayList<>();
     public static List<Entity> powerUps = new ArrayList<>();
-    public static List<Entity> explodeBomb = new ArrayList<>();
+    public static List<Entity> explodingBomb = new ArrayList<>();
 
     public static List<Entity> getStillObjects() {
         return stillObjects;
@@ -62,7 +62,7 @@ public class Sandbox {
     }
 
     public static void addExplodeBombToGame(Entity e) {
-        explodeBomb.add(e);
+        explodingBomb.add(e);
     }
 
     private static void init() {

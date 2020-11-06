@@ -1,7 +1,9 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.explodebomb;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.constants.Dimension;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 
 
@@ -16,36 +18,26 @@ import java.util.List;
 public class ExplodeBomb extends Entity {
 
     boolean friendly = true;
+    Dimension dimension = Dimension.CENTER;
 
-    List<ExplodeBomb> spanExplosionHorizontal = new ArrayList<>();
-    List<ExplodeBomb> spanExplosionVertical = new ArrayList<>();
-
-    int timerDurationInMillis = 1000;
+    int timerDurationInMillis = 2500;
     RectBoundedBox entityBoundary;
 
 
     public final Image[] explodingBomb = {Sprite.bomb_exploded.getFxImage(), Sprite.bomb_exploded1.getFxImage(), Sprite.bomb_exploded2.getFxImage()};
     public final SpriteAnimation explodeBomb = new SpriteAnimation(explodingBomb, 5);
 
-    public final Image[] explodingHorizontal = {Sprite.explosion_horizontal.getFxImage(), Sprite.explosion_horizontal.getFxImage(), Sprite.explosion_horizontal.getFxImage()};
+    public final Image[] explodingHorizontal = {Sprite.explosion_horizontal.getFxImage(), Sprite.explosion_horizontal1.getFxImage(), Sprite.explosion_horizontal2.getFxImage()};
     public final SpriteAnimation explodeHorizontal = new SpriteAnimation(explodingHorizontal, 5);
 
-    public final Image[] explodingVertical = {Sprite.explosion_vertical.getFxImage(), Sprite.explosion_vertical.getFxImage(), Sprite.explosion_vertical.getFxImage()};
+    public final Image[] explodingVertical = {Sprite.explosion_vertical.getFxImage(), Sprite.explosion_vertical1.getFxImage(), Sprite.explosion_vertical2.getFxImage()};
     public final SpriteAnimation explodeVertical = new SpriteAnimation(explodingVertical, 5);
 
-//TODO make flame after explosion
-//   public void initExplosionFlame() {
-//        for (int i = -explodeLength; i <= explodeLength; i++) {
-//            if (i == 0) continue;
-//            ExplodeBomb newExplosion1 = new ExplodeBomb((x + i) * Sprite.SCALED_SIZE, (y + i) * Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage());
-//            spanExplosionHorizontal.add(newExplosion1);
-//            ExplodeBomb newExplosion2 = new ExplodeBomb(x + i, y + i, Sprite.explosion_vertical.getFxImage());
-//            spanExplosionVertical.add(newExplosion1);
-//        }
-//    }
+    SpriteAnimation animation;
 
-    public SpriteAnimation getExplodeBomb() {
-        return explodeBomb;
+
+    public SpriteAnimation getExplodingBomb() {
+        return animation;
     }
 
     enum STATE {
@@ -62,12 +54,23 @@ public class ExplodeBomb extends Entity {
         friendly = b;
     }
 
-    public ExplodeBomb(int x, int y, Image img) {
+    public ExplodeBomb(int x, int y, Image img, Dimension dimension) {
         super(x, y, img);
         entityBoundary = new RectBoundedBox(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
         addedDate = new Date();
         bombState = STATE.ACTIVE;
-//        initExplosionFlame();
+        this.dimension = dimension;
+        switch (dimension) {
+            case CENTER:
+                animation = explodeBomb;
+                break;
+            case VERTICAL:
+                animation = explodeVertical;
+                break;
+            case HORIZONTAL:
+                animation = explodeHorizontal;
+                break;
+        }
     }
 
     public boolean isExploding() {
@@ -79,7 +82,7 @@ public class ExplodeBomb extends Entity {
         if (new Date().getTime() > timerDurationInMillis + addedDate.getTime()) {
             return STATE.EXPLODING;
         } else {
-            return STATE.ACTIVE;
+            return STATE.DEAD;
         }
     }
 
@@ -90,7 +93,7 @@ public class ExplodeBomb extends Entity {
 
     @Override
     public void update() {
-        explodeBomb.update();
+        animation.update();
     }
 
     @Override
@@ -112,6 +115,6 @@ public class ExplodeBomb extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(explodeBomb.getSprite(), x, y);
+        gc.drawImage(animation.getSprite(), x, y);
     }
 }

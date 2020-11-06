@@ -37,6 +37,9 @@ public class Bomber extends Entity {
     private int step = 1;
     RectBoundedBox playerBoundary;
 
+    public int getExplodeLength() {
+        return explodeLength;
+    }
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);

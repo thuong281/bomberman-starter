@@ -30,11 +30,14 @@ public class GameLoop {
         bomb.forEach(Entity::update);
         explodingBomb.forEach(Entity::update);
         enemies.forEach(Entity::update);
+        Sandbox.getEnemies().removeIf(Entity::isCollideWithFlame);
+        Sandbox.getBricks().removeIf(Entity::isCollideWithFlame);
+        Sandbox.getStillObjects().removeIf(Entity::isCollideWithFlame);
         if (Sandbox.bomb.size() > 0) {
             for (int i = 0; i < Sandbox.bomb.size(); i++) {
                 Bomb tmpBomb = (Bomb) Sandbox.bomb.get(i);
                 tmpBomb.changeFriendlyState();
-                if (!tmpBomb.isAlive()) {
+                if (!tmpBomb.isAlive() || tmpBomb.isCollideWithFlame()) {
                     for (ExplodeBomb explodeBomb : tmpBomb.getExplodeRange()) {
                         Sandbox.addExplodeBombToGame(explodeBomb);
                         explodeBomb.getExplodingBomb().start();
@@ -56,6 +59,7 @@ public class GameLoop {
 
     public static void renderGame() {
         stillObjects.forEach(g -> g.render(gc));
+        walls.forEach(g -> g.render(gc));
         enemies.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
         explodingBomb.forEach(g -> g.render(gc));

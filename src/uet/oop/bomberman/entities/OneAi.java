@@ -8,6 +8,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.SpriteAnimation;
 import uet.oop.bomberman.scenes.Sandbox;
 
+
 public class OneAi extends Entity {
 
     RectBoundedBox entityBoundary;
@@ -106,4 +107,6 @@ public class OneAi extends Entity {
     public void render(GraphicsContext gc) {
         gc.drawImage(animation.getSprite(), x, y);
     }
+
+
 }

@@ -60,20 +60,76 @@ public class Bomb extends Entity {
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
         entityBoundary = new RectBoundedBox(x, y, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
-        //explodeBomb = new ExplodeBomb(x, y, Sprite.bomb_exploded.getFxImage(), Dimension.HORIZONTAL);
-        for (int i = -explodeLength; i <= explodeLength; i++) {
-            if (i == 0) {
-                ExplodeBomb newExplode = new ExplodeBomb(x, y, Sprite.bomb_exploded.getFxImage(), Dimension.CENTER);
-                explodeRange.add(newExplode);
-                continue;
-            }
-            ExplodeBomb newExplodeHorizontal = new ExplodeBomb(x+ i * 32, y , Sprite.bomb_exploded.getFxImage(), Dimension.HORIZONTAL);
-            ExplodeBomb newExplodeVertical = new ExplodeBomb(x , y+ i * 32, Sprite.bomb_exploded.getFxImage(), Dimension.VERTICAL);
-            explodeRange.add(newExplodeHorizontal);
-            explodeRange.add(newExplodeVertical);
-        }
+        ExplodeBomb newExplode = new ExplodeBomb(x, y, Sprite.bomb_exploded.getFxImage(), Dimension.CENTER);
+        explodeRange.add(newExplode);
+        setExplodeBombTop();
+        setExplodeBombDown();
+        setExplodeBombLeft();
+        setExplodeBombRight();
+
         addedDate = new Date();
         bombState = STATE.ACTIVE;
+    }
+
+    public void setExplodeBombTop() {
+        for (int i = 1; i <= explodeLength; i++) {
+            ExplodeBomb newExplodeVertical = new ExplodeBomb(x, y - i * Sprite.SCALED_SIZE,
+                    Sprite.bomb_exploded.getFxImage(), Dimension.VERTICAL);
+            if (newExplodeVertical.isCollideWithWalls()) {
+                break;
+            } else if (newExplodeVertical.isCollideWithBricks()) {
+                explodeRange.add(newExplodeVertical);
+                break;
+            } else {
+                explodeRange.add(newExplodeVertical);
+            }
+        }
+    }
+
+    public void setExplodeBombDown() {
+        for (int i = 1; i <= explodeLength; i++) {
+            ExplodeBomb newExplodeVertical = new ExplodeBomb(x, y + i * Sprite.SCALED_SIZE,
+                    Sprite.bomb_exploded.getFxImage(), Dimension.VERTICAL);
+            if (newExplodeVertical.isCollideWithWalls()) {
+                break;
+            } else if (newExplodeVertical.isCollideWithBricks()) {
+                explodeRange.add(newExplodeVertical);
+                break;
+            } else {
+                explodeRange.add(newExplodeVertical);
+            }
+        }
+    }
+
+
+    public void setExplodeBombLeft() {
+        for (int i = 1; i <= explodeLength; i++) {
+            ExplodeBomb newExplodeHorizontal = new ExplodeBomb(x - i * Sprite.SCALED_SIZE, y,
+                    Sprite.bomb_exploded.getFxImage(), Dimension.HORIZONTAL);
+            if (newExplodeHorizontal.isCollideWithWalls()) {
+                break;
+            } else if (newExplodeHorizontal.isCollideWithBricks()) {
+                explodeRange.add(newExplodeHorizontal);
+                break;
+            } else {
+                explodeRange.add(newExplodeHorizontal);
+            }
+        }
+    }
+
+    public void setExplodeBombRight() {
+        for (int i = 1; i <= explodeLength; i++) {
+            ExplodeBomb newExplodeHorizontal = new ExplodeBomb(x + i * Sprite.SCALED_SIZE, y,
+                    Sprite.bomb_exploded.getFxImage(), Dimension.HORIZONTAL);
+            if (newExplodeHorizontal.isCollideWithWalls()) {
+                break;
+            } else if (newExplodeHorizontal.isCollideWithBricks()) {
+                explodeRange.add(newExplodeHorizontal);
+                break;
+            } else {
+                explodeRange.add(newExplodeHorizontal);
+            }
+        }
     }
 
     public boolean isAlive() {
@@ -132,4 +188,5 @@ public class Bomb extends Entity {
         }
         return false;
     }
+
 }

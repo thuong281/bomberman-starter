@@ -117,4 +117,21 @@ public class ExplodeBomb extends Entity {
     public void render(GraphicsContext gc) {
         gc.drawImage(animation.getSprite(), x, y);
     }
+
+    public boolean isCollideWithWalls() {
+        for (Entity e : Sandbox.getWalls()) {
+            if (isColliding(e)) return true;
+        }
+        return false;
+    }
+
+    public boolean isCollideWithBricks() {
+        for (Entity e : Sandbox.getBricks()) {
+            if (isColliding(e)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 }

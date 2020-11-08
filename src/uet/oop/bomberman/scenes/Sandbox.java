@@ -32,16 +32,37 @@ public class Sandbox {
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> walls = new ArrayList<>();
+    public static List<Entity> bricks = new ArrayList<>();
     public static List<Entity> enemies = new ArrayList<>();
     public static List<Entity> bomb = new ArrayList<>();
     public static List<Entity> powerUps = new ArrayList<>();
     public static List<Entity> explodingBomb = new ArrayList<>();
 
+
+    public static List<Entity> getExplodingBomb() {
+        return explodingBomb;
+    }
+
+
+
     public static List<Entity> getStillObjects() {
         return stillObjects;
     }
 
-//    public static int count() {
+    public static List<Entity> getWalls() {
+        return walls;
+    }
+
+    public static List<Entity> getBricks() {
+        return bricks;
+    }
+
+    public static List<Entity> getEnemies() {
+        return enemies;
+    }
+
+    //    public static int count() {
 //        return bomb.size();
 //    }
 
@@ -79,8 +100,12 @@ public class Sandbox {
                 Entity backObject;
                 if (Character.toString(getMapLines()[j].charAt(i)).equals("#")) {
                     object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.wall.getFxImage());
+                    walls.add(object);
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("*")) {
                     object = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage());
+                    backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
+                    stillObjects.add(backObject);
+                    bricks.add(object);
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("1")) {
                     backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
                     stillObjects.add(backObject);

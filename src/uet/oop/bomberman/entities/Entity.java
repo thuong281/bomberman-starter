@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.scenes.Sandbox;
 
 public abstract class Entity {
     protected int x;
@@ -49,6 +50,27 @@ public abstract class Entity {
     public abstract boolean isColliding(Entity b);
     public abstract RectBoundedBox getBoundingBox();
     public abstract boolean isPlayerCollisionFriendly();
+
+    public boolean isCollideWithFlame() {
+        for (Entity e : Sandbox.getExplodingBomb()) {
+            if (isColliding(e)) return true;
+        }
+        return false;
+    }
+
+    public boolean isCollideWithWalls() {
+        for (Entity e : Sandbox.getWalls()) {
+            if (isColliding(e)) return true;
+        }
+        return false;
+    }
+
+    public boolean isCollideWithBricks() {
+        for (Entity e : Sandbox.getBricks()) {
+            if (isColliding(e)) return true;
+        }
+        return false;
+    }
 
 
 }

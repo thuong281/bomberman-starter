@@ -1,30 +1,40 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.constants.Direction;
 import uet.oop.bomberman.entities.boundedbox.RectBoundedBox;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.SpriteAnimation;
 import uet.oop.bomberman.scenes.Sandbox;
 
+
 public class OneAi extends Entity {
 
     RectBoundedBox entityBoundary;
     int step = 1;
-    Direction direction = Direction.UP;
+    boolean isAlive = true;
 
-    public final Image[] movingUp = {Sprite.oneal_right1.getFxImage(), Sprite.oneal_right2.getFxImage(), Sprite.oneal_right3.getFxImage()};
-    public final SpriteAnimation moveUp = new SpriteAnimation(movingUp, 10);
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 
-    public final Image[] movingDown = {Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1.getFxImage()};
-    public final SpriteAnimation moveDown = new SpriteAnimation(movingDown, 10);
+    Direction direction = Direction.RIGHT;
 
-    SpriteAnimation animation = moveUp;
+    public final Image[] movingRight = {Sprite.oneal_right1.getFxImage(), Sprite.oneal_right2.getFxImage(), Sprite.oneal_right3.getFxImage()};
+    public final SpriteAnimation moveRight = new SpriteAnimation(movingRight, 10);
 
+    public final Image[] movingLeft = {Sprite.oneal_left1.getFxImage(), Sprite.oneal_left2.getFxImage(), Sprite.oneal_left3.getFxImage()};
+    public final SpriteAnimation moveLeft = new SpriteAnimation(movingLeft, 10);
+
+    public final Image[] dying = {Sprite.oneal_dead.getFxImage(), Sprite.mob_dead1.getFxImage(), Sprite.mob_dead2.getFxImage(), Sprite.mob_dead3.getFxImage()};
+    public final SpriteAnimation die = new SpriteAnimation(dying, 40);
+
+    SpriteAnimation animation = moveLeft;
+
+    public void setAnimation(SpriteAnimation animation) {
+        this.animation = animation;
+    }
 
     public OneAi(int x, int y, Image img) {
         super(x, y, img);
@@ -32,7 +42,7 @@ public class OneAi extends Entity {
         animation.start();
     }
 
-    public boolean collideDown() {
+    public boolean collideLeft() {
         int tmpY = y + step;
         entityBoundary.setPosition(x, tmpY);
         for (Entity e : Sandbox.getStillObjects()) {
@@ -41,15 +51,27 @@ public class OneAi extends Entity {
                 return true;
             }
         }
+        for (Entity e : Sandbox.getBomb()) {
+            if (isColliding(e)) {
+                entityBoundary.setPosition(x, y);
+                return true;
+            }
+        }
         entityBoundary.setPosition(x, y);
         return false;
     }
 
-    public boolean collideUp() {
+    public boolean collideRight() {
         int tmpY = y - step;
         entityBoundary.setPosition(x, tmpY);
         for (Entity e : Sandbox.getStillObjects()) {
             if (isColliding(e) && !e.isPlayerCollisionFriendly()) {
+                entityBoundary.setPosition(x, y);
+                return true;
+            }
+        }
+        for (Entity e : Sandbox.getBomb()) {
+            if (isColliding(e)) {
                 entityBoundary.setPosition(x, y);
                 return true;
             }
@@ -61,17 +83,21 @@ public class OneAi extends Entity {
     @Override
     public void update() {
         animation.update();
-        if (collideUp()) direction = Direction.DOWN;
-        if (collideDown()) direction = Direction.UP;
-        switch (direction) {
-            case UP:
-                y -= step;
-                animation = moveUp;
-                break;
-            case DOWN:
-                y += step;
-                animation = moveDown;
-                break;
+        if (isAlive) {
+            if (collideRight()) direction = Direction.LEFT;
+            if (collideLeft()) direction = Direction.RIGHT;
+            switch (direction) {
+                case RIGHT:
+                    y -= step;
+                    animation = moveRight;
+                    animation.start();
+                    break;
+                case LEFT:
+                    y += step;
+                    animation = moveLeft;
+                    animation.start();
+                    break;
+            }
         }
     }
 
@@ -83,7 +109,8 @@ public class OneAi extends Entity {
 
     @Override
     public RectBoundedBox getBoundingBox() {
-        return null;
+        entityBoundary.setPosition(x, y);
+        return entityBoundary;
     }
 
     @Override
@@ -95,4 +122,10 @@ public class OneAi extends Entity {
     public void render(GraphicsContext gc) {
         gc.drawImage(animation.getSprite(), x, y);
     }
+
+    public void startAnimation() {
+        animation.start();
+    }
+
+
 }

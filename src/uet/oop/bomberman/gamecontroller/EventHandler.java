@@ -17,6 +17,11 @@ public class EventHandler {
         s.setOnKeyPressed(kph);
     }
 
+    public static void removeEventHandlers(Scene s) {
+        s.setOnKeyReleased(null);
+        s.setOnKeyPressed(null);
+    }
+
     public boolean isKeyDown(KeyCode k) {
         if (inputList.contains(k)) {
             return true;

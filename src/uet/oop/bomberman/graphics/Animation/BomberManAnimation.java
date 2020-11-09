@@ -34,6 +34,11 @@ public class BomberManAnimation {
     public static final Image[] standingDown = {Sprite.player_down.getFxImagePlayer()};
     public static final SpriteAnimation standDown = new SpriteAnimation(standingDown, 5);
 
+    //die
+    public static Image[] dying = {Sprite.player_dead1.getFxImagePlayer(), Sprite.player_dead2.getFxImagePlayer(),
+            Sprite.player_dead3.getFxImagePlayer()};
+    public static SpriteAnimation die = new SpriteAnimation(dying, 30);
+
     //initial sprite
     public static SpriteAnimation animation = standRight;
 

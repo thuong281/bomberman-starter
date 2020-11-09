@@ -25,7 +25,7 @@ public class Sandbox {
     public static final int HEIGHT = getRows();
     public static Scene s;
 
-    static Group root;
+    public static Group root;
     static Canvas c;
     public static GraphicsContext gc;
     static Bomber SandboxBomber;
@@ -38,12 +38,19 @@ public class Sandbox {
     public static List<Entity> bomb = new ArrayList<>();
     public static List<Entity> powerUps = new ArrayList<>();
     public static List<Entity> explodingBomb = new ArrayList<>();
+    public static List<Entity> gates = new ArrayList<>();
 
+    public static List<Entity> getGates() {
+        return gates;
+    }
+
+    public static void addGates(Entity gates) {
+        Sandbox.gates.add(gates);
+    }
 
     public static List<Entity> getExplodingBomb() {
         return explodingBomb;
     }
-
 
 
     public static List<Entity> getStillObjects() {
@@ -98,6 +105,7 @@ public class Sandbox {
             for (int j = 0; j < getMapLines().length; j++) {
                 Entity object;
                 Entity backObject;
+                Entity frontObject;
                 if (Character.toString(getMapLines()[j].charAt(i)).equals("#")) {
                     object = new Wall(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.wall.getFxImage());
                     walls.add(object);
@@ -117,6 +125,15 @@ public class Sandbox {
                     stillObjects.add(backObject);
                     object = new OneAi(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.oneal_right1.getFxImage());
                     addEnemies(object);
+                    continue;
+                } else if (Character.toString(getMapLines()[j].charAt(i)).equals("x")) {
+                    backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());
+                    stillObjects.add(backObject);
+                    frontObject = new Brick(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.brick.getFxImage());
+                    bricks.add(frontObject);
+                    stillObjects.add(frontObject);
+                    object = new Gate(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.portal.getFxImage());
+                    addGates(object);
                     continue;
                 } else if (Character.toString(getMapLines()[j].charAt(i)).equals("b")) {
                     backObject = new Grass(i * Sprite.SCALED_SIZE, j * Sprite.SCALED_SIZE, Sprite.grass.getFxImage());

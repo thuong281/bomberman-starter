@@ -26,6 +26,12 @@ public class Bomber extends Entity {
 
     int explodeLength = 1;
 
+    boolean isAlive = true;
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
     public int getStep() {
         return step;
     }
@@ -65,7 +71,9 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
-        BomberManAnimation.animation.update();
+        if (isAlive) {
+            BomberManAnimation.animation.update();
+        }
     }
 
     @Override
@@ -199,6 +207,41 @@ public class Bomber extends Entity {
 
     public void decrementBombCount() {
         --bombCount;
+    }
+
+    public void startAnimation() {
+        animation.start();
+    }
+
+    public void stopAnimation() {
+        animation.stop();
+    }
+
+    public void setAnimation(SpriteAnimation animation) {
+        BomberManAnimation.animation = animation;
+    }
+
+    public boolean isDead() {
+        for (Entity e : Sandbox.getExplodingBomb()) {
+            if (isColliding(e)) {
+                return true;
+            }
+        }
+        for (Entity e : Sandbox.getEnemies()) {
+            if (isColliding(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isWinner() {
+        for (Entity e : Sandbox.getGates()) {
+            if (isColliding(e)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

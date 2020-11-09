@@ -1,13 +1,32 @@
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.explodebomb.ExplodeBomb;
+import uet.oop.bomberman.gamecontroller.EventHandler;
 import uet.oop.bomberman.gamecontroller.InputManager;
+import uet.oop.bomberman.graphics.Animation.BomberManAnimation;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scenes.Sandbox;
 
+
+import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static uet.oop.bomberman.scenes.Sandbox.*;
 
@@ -30,9 +49,76 @@ public class GameLoop {
         bomb.forEach(Entity::update);
         explodingBomb.forEach(Entity::update);
         enemies.forEach(Entity::update);
-        Sandbox.getEnemies().removeIf(Entity::isCollideWithFlame);
+
+        if (Sandbox.getBomber().isWinner()) {
+            System.out.println("win");
+            EventHandler.getInputList().clear();
+            EventHandler.removeEventHandlers(s);
+            Image image = Sprite.winner;
+
+            gc.drawImage(image, 300, 100);
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.exit();
+                }
+            }, 3000);
+
+
+        }
+
+        if (Sandbox.getBomber().isDead()) {
+            System.out.println("Game Over !!!!");
+            EventHandler.getInputList().clear();
+            Sandbox.getBomber().setAnimation(BomberManAnimation.die);
+            Sandbox.getBomber().startAnimation();
+            EventHandler.removeEventHandlers(s);
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Sandbox.getBomber().setAlive(false);
+                    entities.remove(Sandbox.getBomber());
+                    Platform.exit();
+                }
+            }, 1550);
+        }
+
+
         Sandbox.getBricks().removeIf(Entity::isCollideWithFlame);
         Sandbox.getStillObjects().removeIf(Entity::isCollideWithFlame);
+        for (Entity e : Sandbox.getEnemies()) {
+            if (e.isCollideWithFlame()) {
+
+                if (e instanceof OneAi) {
+                    ((OneAi) e).setAlive(false);
+                    ((OneAi) e).setAnimation(((OneAi) e).die);
+                    ((OneAi) e).startAnimation();
+                    Timer time = new Timer();
+                    time.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            Sandbox.getEnemies().remove(e);
+                        }
+                    }, 2000);
+                }
+
+                if (e instanceof Balloom) {
+                    ((Balloom) e).setAlive(false);
+                    ((Balloom) e).setAnimation(((Balloom) e).die);
+                    ((Balloom) e).startAnimation();
+                    Timer time = new Timer();
+                    time.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            Sandbox.getEnemies().remove(e);
+                        }
+                    }, 2000);
+                }
+
+            }
+        }
         if (Sandbox.bomb.size() > 0) {
             for (int i = 0; i < Sandbox.bomb.size(); i++) {
                 Bomb tmpBomb = (Bomb) Sandbox.bomb.get(i);
@@ -59,10 +145,12 @@ public class GameLoop {
 
     public static void renderGame() {
         stillObjects.forEach(g -> g.render(gc));
+        gates.forEach(g -> g.render(gc));
+        bricks.forEach(g -> g.render(gc));
         walls.forEach(g -> g.render(gc));
+        explodingBomb.forEach(g -> g.render(gc));
         enemies.forEach(g -> g.render(gc));
         bomb.forEach(g -> g.render(gc));
-        explodingBomb.forEach(g -> g.render(gc));
         powerUps.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
     }

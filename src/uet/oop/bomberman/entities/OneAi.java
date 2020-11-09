@@ -13,16 +13,28 @@ public class OneAi extends Entity {
 
     RectBoundedBox entityBoundary;
     int step = 1;
-    Direction direction = Direction.UP;
+    boolean isAlive = true;
 
-    public final Image[] movingUp = {Sprite.oneal_right1.getFxImage(), Sprite.oneal_right2.getFxImage(), Sprite.oneal_right3.getFxImage()};
-    public final SpriteAnimation moveUp = new SpriteAnimation(movingUp, 10);
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 
-    public final Image[] movingDown = {Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1.getFxImage(), Sprite.oneal_left1.getFxImage()};
-    public final SpriteAnimation moveDown = new SpriteAnimation(movingDown, 10);
+    Direction direction = Direction.RIGHT;
 
-    SpriteAnimation animation = moveDown;
+    public final Image[] movingRight = {Sprite.oneal_right1.getFxImage(), Sprite.oneal_right2.getFxImage(), Sprite.oneal_right3.getFxImage()};
+    public final SpriteAnimation moveRight = new SpriteAnimation(movingRight, 10);
 
+    public final Image[] movingLeft = {Sprite.oneal_left1.getFxImage(), Sprite.oneal_left2.getFxImage(), Sprite.oneal_left3.getFxImage()};
+    public final SpriteAnimation moveLeft = new SpriteAnimation(movingLeft, 10);
+
+    public final Image[] dying = {Sprite.oneal_dead.getFxImage(), Sprite.mob_dead1.getFxImage(), Sprite.mob_dead2.getFxImage(), Sprite.mob_dead3.getFxImage()};
+    public final SpriteAnimation die = new SpriteAnimation(dying, 40);
+
+    SpriteAnimation animation = moveLeft;
+
+    public void setAnimation(SpriteAnimation animation) {
+        this.animation = animation;
+    }
 
     public OneAi(int x, int y, Image img) {
         super(x, y, img);
@@ -30,7 +42,7 @@ public class OneAi extends Entity {
         animation.start();
     }
 
-    public boolean collideDown() {
+    public boolean collideLeft() {
         int tmpY = y + step;
         entityBoundary.setPosition(x, tmpY);
         for (Entity e : Sandbox.getStillObjects()) {
@@ -49,7 +61,7 @@ public class OneAi extends Entity {
         return false;
     }
 
-    public boolean collideUp() {
+    public boolean collideRight() {
         int tmpY = y - step;
         entityBoundary.setPosition(x, tmpY);
         for (Entity e : Sandbox.getStillObjects()) {
@@ -71,19 +83,21 @@ public class OneAi extends Entity {
     @Override
     public void update() {
         animation.update();
-        if (collideUp()) direction = Direction.DOWN;
-        if (collideDown()) direction = Direction.UP;
-        switch (direction) {
-            case UP:
-                y -= step;
-                animation = moveUp;
-                animation.start();
-                break;
-            case DOWN:
-                y += step;
-                animation = moveDown;
-                animation.start();
-                break;
+        if (isAlive) {
+            if (collideRight()) direction = Direction.LEFT;
+            if (collideLeft()) direction = Direction.RIGHT;
+            switch (direction) {
+                case RIGHT:
+                    y -= step;
+                    animation = moveRight;
+                    animation.start();
+                    break;
+                case LEFT:
+                    y += step;
+                    animation = moveLeft;
+                    animation.start();
+                    break;
+            }
         }
     }
 
@@ -95,7 +109,8 @@ public class OneAi extends Entity {
 
     @Override
     public RectBoundedBox getBoundingBox() {
-        return null;
+        entityBoundary.setPosition(x, y);
+        return entityBoundary;
     }
 
     @Override
@@ -106,6 +121,10 @@ public class OneAi extends Entity {
     @Override
     public void render(GraphicsContext gc) {
         gc.drawImage(animation.getSprite(), x, y);
+    }
+
+    public void startAnimation() {
+        animation.start();
     }
 
 

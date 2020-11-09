@@ -12,6 +12,12 @@ public class Balloom extends Entity {
 
     RectBoundedBox entityBoundary;
     int step = 1;
+    boolean isAlive = true;
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
     Direction direction = Direction.RIGHT;
 
     public final Image[] movingLeft = {Sprite.balloom_left1.getFxImage(), Sprite.balloom_left2.getFxImage(), Sprite.balloom_left3.getFxImage()};
@@ -20,7 +26,15 @@ public class Balloom extends Entity {
     public final Image[] movingRight = {Sprite.balloom_right1.getFxImage(), Sprite.balloom_right2.getFxImage(), Sprite.balloom_right3.getFxImage()};
     public final SpriteAnimation moveRight = new SpriteAnimation(movingRight, 10);
 
+    public final Image[] dying = {Sprite.balloom_dead.getFxImage(), Sprite.mob_dead1.getFxImage(), Sprite.mob_dead2.getFxImage(), Sprite.mob_dead3.getFxImage()};
+    public final SpriteAnimation die = new SpriteAnimation(dying, 40);
+
+
     SpriteAnimation animation = moveLeft;
+
+    public void setAnimation(SpriteAnimation animation) {
+        this.animation = animation;
+    }
 
 
     public Balloom(int x, int y, Image img) {
@@ -72,19 +86,21 @@ public class Balloom extends Entity {
     @Override
     public void update() {
         animation.update();
-        if (collideLeft()) direction = Direction.RIGHT;
-        if (collideRight()) direction = Direction.LEFT;
-        switch (direction) {
-            case LEFT:
-                x -= step;
-                animation = moveLeft;
-                animation.start();
-                break;
-            case RIGHT:
-                x += step;
-                animation = moveRight;
-                animation.start();
-                break;
+        if (isAlive) {
+            if (collideLeft()) direction = Direction.RIGHT;
+            if (collideRight()) direction = Direction.LEFT;
+            switch (direction) {
+                case LEFT:
+                    x -= step;
+                    animation = moveLeft;
+                    animation.start();
+                    break;
+                case RIGHT:
+                    x += step;
+                    animation = moveRight;
+                    animation.start();
+                    break;
+            }
         }
     }
 
@@ -96,7 +112,8 @@ public class Balloom extends Entity {
 
     @Override
     public RectBoundedBox getBoundingBox() {
-        return null;
+        entityBoundary.setPosition(x, y);
+        return entityBoundary;
     }
 
     @Override
@@ -107,5 +124,9 @@ public class Balloom extends Entity {
     @Override
     public void render(GraphicsContext gc) {
         gc.drawImage(animation.getSprite(), x, y);
+    }
+
+    public void startAnimation() {
+        animation.start();
     }
 }

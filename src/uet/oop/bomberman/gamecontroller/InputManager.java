@@ -8,6 +8,7 @@ import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.graphics.Animation.BomberManAnimation;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scenes.Sandbox;
+import uet.oop.bomberman.sound.Sounds;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class InputManager {
 
         if (keyboardInputs.contains(KeyCode.SPACE)) {
             if (bomber.hasMoreBombs()) {
+                Sounds.getIstance(Sounds.newbom).play();
                 Bomb newBomb = new Bomb(((bomber.getX() + 8) / 32) * Sprite.SCALED_SIZE,
                         ((bomber.getY() + 8) / 32) * Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
                 if (!newBomb.isOnOtherBomb()) {

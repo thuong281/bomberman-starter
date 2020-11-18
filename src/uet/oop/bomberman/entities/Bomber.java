@@ -16,14 +16,31 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.SpriteAnimation;
 import uet.oop.bomberman.scenes.Sandbox;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+//import uet.oop.bomberman.sound.GameSound;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+
+import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Random;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+import uet.oop.bomberman.sound.Sounds;
 
 public class Bomber extends Entity {
 
     Direction currentDirection;
     public int bombCount = 10;
-
     int explodeLength = 1;
 
     boolean isAlive = true;
@@ -51,7 +68,6 @@ public class Bomber extends Entity {
         super(x, y, img);
         playerBoundary = new RectBoundedBox(x, y, (int) (Sprite.DEFAULT_SIZE * 1.5), (int) (Sprite.DEFAULT_SIZE * 1.5));
     }
-
     @Override
     public boolean isColliding(Entity b) {
         RectBoundedBox otherEntityBoundary = b.getBoundingBox();
@@ -146,11 +162,19 @@ public class Bomber extends Entity {
                 break;
             case LEFT:
                 if (!checkCollisions(x - step, y)) {
-                    getPowerUp();
-                    x -= getStep();
-                    animation = walkLeft;
-                    currentDirection = Direction.LEFT;
-                    animation.start();
+
+                    try {
+                        getPowerUp();
+                        x -= getStep();
+                        animation = walkLeft;
+                        currentDirection = Direction.LEFT;
+                        animation.start();
+                    }
+                    catch (NullPointerException e) {
+                        e.printStackTrace();
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             case RIGHT:
@@ -172,19 +196,21 @@ public class Bomber extends Entity {
     public void getPowerUp() {
         if (Sandbox.powerUps.size() > 0) {
             List<Entity> tmp = new ArrayList<>(Sandbox.powerUps);
-
             for (int i = 0; i < tmp.size(); i++) {
                 if (isColliding(tmp.get(i)) && tmp.get(i) instanceof Speed) {
+                    Sounds.getIstance(Sounds.itemsd).play();
                     Sandbox.powerUps.remove(Sandbox.powerUps.get(i));
                     setStep(getStep() + 1);
                     System.out.println("speed up");
                 }
                 if (isColliding(tmp.get(i)) && tmp.get(i) instanceof Flame) {
+                    Sounds.getIstance(Sounds.itemsd).play();
                     Sandbox.powerUps.remove(Sandbox.powerUps.get(i));
                     Sandbox.getBomber().explodeLength++;
                     System.out.println("longer explosion");
                 }
                 if (isColliding(tmp.get(i)) && tmp.get(i) instanceof AddBomb) {
+                    Sounds.getIstance(Sounds.itemsd).play();
                     Sandbox.powerUps.remove(Sandbox.powerUps.get(i));
                     bombCount++;
                     System.out.println("add bomb");

@@ -2,17 +2,8 @@ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.explodebomb.ExplodeBomb;
 import uet.oop.bomberman.gamecontroller.EventHandler;
@@ -21,36 +12,38 @@ import uet.oop.bomberman.graphics.Animation.BomberManAnimation;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.scenes.Sandbox;
 
+import uet.oop.bomberman.sound.Sounds;
 
-import java.awt.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static uet.oop.bomberman.scenes.Sandbox.*;
 
 
+
 public class GameLoop {
+    public static Sounds playgame;
     public static void start(GraphicsContext gc) {
+        playgame = new Sounds(new File("res/sounds/playgame.wav"));
+        playgame.play();
         new AnimationTimer() {
             public void handle(long l) {
                 gc.clearRect(0, 0, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-
                 renderGame();
                 updateGame();
             }
         }.start();
     }
-
     public static void updateGame() {
+
         InputManager.handlePlayerMovements();
         entities.forEach(Entity::update);
         bomb.forEach(Entity::update);
         explodingBomb.forEach(Entity::update);
         enemies.forEach(Entity::update);
-
         if (Sandbox.getBomber().isWinner()) {
+
             System.out.println("win");
             EventHandler.getInputList().clear();
             EventHandler.removeEventHandlers(s);
@@ -65,11 +58,12 @@ public class GameLoop {
                 }
             }, 3000);
 
-
         }
 
         if (Sandbox.getBomber().isDead()) {
             System.out.println("Game Over !!!!");
+            Sounds.getIstance(Sounds.bomber_die).play();
+            playgame.stop();
             EventHandler.getInputList().clear();
             Sandbox.getBomber().setAnimation(BomberManAnimation.die);
             Sandbox.getBomber().startAnimation();
@@ -92,6 +86,7 @@ public class GameLoop {
             if (e.isCollideWithFlame()) {
 
                 if (e instanceof OneAi) {
+                    Sounds.getIstance(Sounds.monstersd).play();
                     ((OneAi) e).setAlive(false);
                     ((OneAi) e).setAnimation(((OneAi) e).die);
                     ((OneAi) e).startAnimation();
@@ -105,6 +100,7 @@ public class GameLoop {
                 }
 
                 if (e instanceof Balloom) {
+                    Sounds.getIstance(Sounds.monstersd).play();
                     ((Balloom) e).setAlive(false);
                     ((Balloom) e).setAnimation(((Balloom) e).die);
                     ((Balloom) e).startAnimation();
@@ -128,11 +124,13 @@ public class GameLoop {
                         Sandbox.addExplodeBombToGame(explodeBomb);
                         explodeBomb.getExplodingBomb().start();
                     }
+
                     Sandbox.bomb.remove(i);
                 }
             }
         }
         if (explodingBomb.size() > 0) {
+            Sounds.getIstance(Sounds.bomb_bang).play();
             for (int i = 0; i < explodingBomb.size(); i++) {
                 ExplodeBomb tmpExplodeBomb = (ExplodeBomb) explodingBomb.get(i);
                 if (!tmpExplodeBomb.isExploding()) {

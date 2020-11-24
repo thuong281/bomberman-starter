@@ -20,27 +20,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//import uet.oop.bomberman.sound.GameSound;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 
-import java.awt.RenderingHints;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import uet.oop.bomberman.sound.Sounds;
 
 public class Bomber extends Entity {
 
     Direction currentDirection;
-    public int bombCount = 10;
+    public int bombCount = 1;
     int explodeLength = 1;
 
     boolean isAlive = true;

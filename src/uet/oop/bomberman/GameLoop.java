@@ -55,6 +55,7 @@ public class GameLoop {
                 @Override
                 public void run() {
                     Platform.exit();
+                    System.exit(1);
                 }
             }, 3000);
 
@@ -75,6 +76,7 @@ public class GameLoop {
                     Sandbox.getBomber().setAlive(false);
                     entities.remove(Sandbox.getBomber());
                     Platform.exit();
+                    System.exit(1);
                 }
             }, 1550);
         }
@@ -120,6 +122,7 @@ public class GameLoop {
                 Bomb tmpBomb = (Bomb) Sandbox.bomb.get(i);
                 tmpBomb.changeFriendlyState();
                 if (!tmpBomb.isAlive() || tmpBomb.isCollideWithFlame()) {
+                    Sandbox.getBomber().incrementBombCount();
                     for (ExplodeBomb explodeBomb : tmpBomb.getExplodeRange()) {
                         Sandbox.addExplodeBombToGame(explodeBomb);
                         explodeBomb.getExplodingBomb().start();
@@ -135,7 +138,6 @@ public class GameLoop {
                 ExplodeBomb tmpExplodeBomb = (ExplodeBomb) explodingBomb.get(i);
                 if (!tmpExplodeBomb.isExploding()) {
                     explodingBomb.remove(i);
-                    Sandbox.getBomber().incrementBombCount();
                 }
             }
         }

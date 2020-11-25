@@ -10,9 +10,10 @@ import uet.oop.bomberman.scenes.Sandbox;
 import java.io.File;
 
 public class Testtttttt {
+    static int cac = 1;
     public static void main(String[] args) {
-        File file = new File("./res/sprites");
-        for(String fileNames : file.list()) System.out.println(fileNames);
+        cac =29;
+        System.out.println(cac);
     }
 
 }

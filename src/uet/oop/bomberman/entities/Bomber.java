@@ -26,7 +26,7 @@ import uet.oop.bomberman.sound.Sounds;
 public class Bomber extends Entity {
 
     Direction currentDirection;
-    public int bombCount = 1;
+    private int bombCount = 1;
     int explodeLength = 1;
 
     boolean isAlive = true;
@@ -52,7 +52,7 @@ public class Bomber extends Entity {
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
-        playerBoundary = new RectBoundedBox(x, y, (int) (Sprite.DEFAULT_SIZE * 1.5), (int) (Sprite.DEFAULT_SIZE * 1.5));
+        playerBoundary = new RectBoundedBox(x, y, (int) (Sprite.DEFAULT_SIZE * 1.5), (int) (Sprite.DEFAULT_SIZE * 1.6));
     }
     @Override
     public boolean isColliding(Entity b) {
@@ -155,9 +155,6 @@ public class Bomber extends Entity {
                         animation = walkLeft;
                         currentDirection = Direction.LEFT;
                         animation.start();
-                    }
-                    catch (NullPointerException e) {
-                        e.printStackTrace();
                     } catch (RuntimeException e) {
                         e.printStackTrace();
                     }

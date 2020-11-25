@@ -15,6 +15,7 @@ import uet.oop.bomberman.scenes.Sandbox;
 import uet.oop.bomberman.sound.Sounds;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,16 +25,18 @@ import static uet.oop.bomberman.scenes.Sandbox.*;
 
 public class GameLoop {
     public static Sounds playgame;
+    static AnimationTimer timer;
     public static void start(GraphicsContext gc) {
         playgame = new Sounds(new File("res/sounds/playgame.wav"));
         playgame.play();
-        new AnimationTimer() {
-            public void handle(long l) {
-                gc.clearRect(0, 0, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-                renderGame();
-                updateGame();
-            }
-        }.start();
+//        new AnimationTimer() {
+//            public void handle(long l) {
+//                renderGame();
+//                updateGame();
+//            }
+//        }.start();
+        timer = new MyTimer();
+        timer.start();
     }
     public static void updateGame() {
 
@@ -54,8 +57,17 @@ public class GameLoop {
             time.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Platform.exit();
-                    System.exit(1);
+                    Platform.runLater(() -> {
+                        try {
+                            Sandbox.destroyAll();
+                            Sandbox.getBomber().setAnimation(BomberManAnimation.standRight);
+                            timer.stop();
+                            playgame.stop();
+                            BombermanGame.setScene(2);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             }, 3000);
 
@@ -75,10 +87,21 @@ public class GameLoop {
                 public void run() {
                     Sandbox.getBomber().setAlive(false);
                     entities.remove(Sandbox.getBomber());
-                    Platform.exit();
-                    System.exit(1);
+                    Platform.runLater(() -> {
+                        try {
+                            Sandbox.destroyAll();
+                            Sandbox.getBomber().setAnimation(BomberManAnimation.standRight);
+                            timer.stop();
+                            playgame.stop();
+                            BombermanGame.setScene(2);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
                 }
             }, 1550);
+
         }
 
 
@@ -153,6 +176,14 @@ public class GameLoop {
         bomb.forEach(g -> g.render(gc));
         powerUps.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+    }
+}
+class MyTimer extends AnimationTimer {
+
+    @Override
+    public void handle(long l) {
+        GameLoop.renderGame();
+        GameLoop.updateGame();
     }
 }
 

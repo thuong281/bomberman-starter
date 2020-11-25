@@ -40,6 +40,18 @@ public class Sandbox {
     public static List<Entity> explodingBomb = new ArrayList<>();
     public static List<Entity> gates = new ArrayList<>();
 
+    public static void destroyAll() {
+        entities.clear();
+        stillObjects.clear();
+        walls.clear();
+        bricks.clear();
+        enemies.clear();
+        bomb.clear();
+        powerUps.clear();
+        explodingBomb.clear();
+        gates.clear();
+    }
+
     public static List<Entity> getGates() {
         return gates;
     }
@@ -69,9 +81,6 @@ public class Sandbox {
         return enemies;
     }
 
-    //    public static int count() {
-//        return bomb.size();
-//    }
 
     public static void addEntityToGame(Entity e) {
         entities.add(e);
